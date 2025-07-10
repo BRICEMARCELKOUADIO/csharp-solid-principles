@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using csharp_solid_principles;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using Xunit;
@@ -7,6 +8,19 @@ namespace ArdalisRating.Tests
 {
     public class RatingEngineRate
     {
+        [Fact]
+        public void ReturnsDefaultPolicyFromEmptyJsonString()
+        {
+            var inputJson = "{}";
+
+            var serializer = new PolicySerializer();
+
+            var result = serializer.GetPolicyFromJosonString(inputJson);
+
+            var policy = new Policy();
+            AssertPoliciesEqual(result, policy);
+        }
+
         [Fact]
         public void ReturnsRatingOf10000For200000LandPolicy()
         {
@@ -44,5 +58,11 @@ namespace ArdalisRating.Tests
 
             Assert.Equal(0, result);
         }
+
+        private void AssertPoliciesEqual(Policy result, Policy policy)
+        {
+            Assert.Equal(policy.Type, result.Type);
+        }
+
     }
 }
